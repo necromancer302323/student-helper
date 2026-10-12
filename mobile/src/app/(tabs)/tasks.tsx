@@ -1,6 +1,12 @@
 import { useCallback, useState } from "react";
 import { useFocusEffect } from "expo-router";
-import { Alert, View, Text, StyleSheet } from "react-native";
+import {
+  Alert,
+  Keyboard,
+  View,
+  Text,
+  StyleSheet,
+} from "react-native";
 import { apiGet, apiPost, apiPatch, apiDelete } from "../../../lib/api";
 import {
   Page,
@@ -84,21 +90,27 @@ export default function TasksScreen() {
     setError("");
 
     try {
-      await apiPost("/tasks", {
-        title: title.trim(),
-        subject: subject.trim(),
-        description: description.trim() || null,
-        due_date: dueDate,
-        due_time: dueTime || null,
-        priority,
-        completed: false,
-      });
+   await apiPost("/tasks", {
+  title: title.trim(),
+  subject: subject.trim(),
+  description: description.trim() || null,
+  due_date: dueDate,
+  due_time: dueTime || null,
+  priority,
+  completed: false,
+});
 
-      setTitle("");
-      setSubject("");
-      setDescription("");
-      setDueTime("");
-      await load();
+// Close the keyboard after the task is successfully saved.
+Keyboard.dismiss();
+
+// Clear the form.
+setTitle("");
+setSubject("");
+setDescription("");
+setDueTime("");
+
+// Refresh the task list.
+await load();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Could not create task.");
     }
@@ -152,13 +164,12 @@ export default function TasksScreen() {
           onChangeText={setSubject}
         />
 
-        <Label>Description (optional)</Label>
-        <Field
-          placeholder="What do you need to finish?"
-          value={description}
-          onChangeText={setDescription}
-          multiline
-        />
+       <Label>Description (optional)</Label>
+<Field
+  placeholder="What do you need to finish?"
+  value={description}
+  onChangeText={setDescription}
+/>
 
         <Label>Due date (YYYY-MM-DD)</Label>
         <Field value={dueDate} onChangeText={setDueDate} />

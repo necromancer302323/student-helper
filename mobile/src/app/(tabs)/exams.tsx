@@ -140,13 +140,12 @@ export default function ExamsScreen() {
           onChangeText={setTime}
         />
 
-        <Label>Description (optional)</Label>
-        <Field
-          placeholder="Chapters to prepare"
-          value={description}
-          onChangeText={setDescription}
-          multiline
-        />
+           <Label>Description (optional)</Label>
+<Field
+  placeholder="What do you need to finish?"
+  value={description}
+  onChangeText={setDescription}
+/>
 
         <Label>Category</Label>
         <View style={styles.categories}>
